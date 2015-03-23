@@ -26,7 +26,7 @@ public class BIABCommandExecutor implements TabExecutor {
 
 
     public boolean onCommand(CommandSender sender, Command command, String alias, String[] params) {
-        LinkedList<String> args = new LinkedList<String>(Arrays.asList(params));
+        LinkedList<String> args = new LinkedList<>(Arrays.asList(params));
         if (args.size() == 0) {
             return false;
         }

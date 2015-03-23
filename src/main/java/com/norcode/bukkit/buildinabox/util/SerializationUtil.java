@@ -2,8 +2,9 @@ package com.norcode.bukkit.buildinabox.util;
 
 import com.norcode.bukkit.buildinabox.BuildInABox;
 import com.norcode.bukkit.schematica.ClipboardBlock;
-import net.minecraft.server.v1_6_R3.NBTCompressedStreamTools;
-import net.minecraft.server.v1_6_R3.NBTTagCompound;
+import java.io.ByteArrayInputStream;
+import net.minecraft.server.v1_7_R3.NBTCompressedStreamTools;
+import net.minecraft.server.v1_7_R3.NBTTagCompound;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -123,7 +124,7 @@ public class SerializationUtil {
         if (s == null) {
             return null;
         }
-        NBTTagCompound tag = NBTCompressedStreamTools.a(Base64.decode(s.getBytes()));
+        NBTTagCompound tag = NBTCompressedStreamTools.a(new ByteArrayInputStream(Base64.decode(s.getBytes())));
         return tag;
     }
     public static String serializeTileEntities(HashMap<BlockVector, NBTTagCompound> ents) {

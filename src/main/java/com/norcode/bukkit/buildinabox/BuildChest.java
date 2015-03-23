@@ -6,11 +6,11 @@ import com.norcode.bukkit.buildinabox.util.RandomFireworksGenerator;
 import com.norcode.bukkit.schematica.Clipboard;
 import com.norcode.bukkit.schematica.ClipboardBlock;
 import com.norcode.bukkit.schematica.MaterialID;
-import net.minecraft.server.v1_6_R3.NBTTagCompound;
-import net.minecraft.server.v1_6_R3.Packet61WorldEvent;
+import net.minecraft.server.v1_7_R3.NBTTagCompound;
+import net.minecraft.server.v1_7_R3.PacketPlayOutWorldEvent;
 import org.bukkit.*;
 import org.bukkit.block.*;
-import org.bukkit.craftbukkit.v1_6_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -397,13 +397,13 @@ public class BuildChest {
     }
 
     private void playBuildAnimation(Location loc, int type, byte data, List<Player> nearby, BIABConfig.AnimationStyle style) {
-        Packet61WorldEvent packet = null;
+        PacketPlayOutWorldEvent packet = null;
         switch (style) {
         case BREAK:
-            packet = new Packet61WorldEvent(2001, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), type, false);
+            packet = new PacketPlayOutWorldEvent(2001, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), type, false);
             break;
         case SMOKE:
-            packet = new Packet61WorldEvent(2000, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), 4, false);
+            packet = new PacketPlayOutWorldEvent(2000, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), 4, false);
             break;
         }
         for (Player p: nearby) {

@@ -36,29 +36,6 @@ public class PlayerListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(ignoreCancelled=true)
-    public void onPlayerLogin(PlayerLoginEvent event) {
-        if (plugin.updater == null) return;
-        if (event.getPlayer().hasPermission("biab.admin")) {
-            final String playerName = event.getPlayer().getName();
-            plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
-                public void run() {
-                    Player player = plugin.getServer().getPlayer(playerName);
-                    if (player != null && player.isOnline()) {
-                        switch (plugin.updater.getResult()) {
-                            case UPDATE_AVAILABLE:
-                                player.sendMessage(BuildInABox.getNormalMsg("update-available", "http://dev.bukkit.org/server-mods/build-in-a-box/"));
-                                break;
-                            case SUCCESS:
-                                player.sendMessage(BuildInABox.getNormalMsg("update-downloaded"));
-                                break;
-                        }
-                    }
-                }
-            }, 20);
-        }
-    }
-
     @EventHandler(ignoreCancelled=true, priority = EventPriority.LOW)
     public void onPlayerSelection(PlayerInteractEvent event) {
         if (event.getItem() != null && event.getItem().getTypeId() == plugin.getConfig().getInt("selection-wand-id", 294)) { // GOLD_HOE
@@ -77,6 +54,9 @@ public class PlayerListener implements Listener {
                     event.getPlayer().sendMessage(BuildInABox.getErrorMsg("save-failed"));
                     return;
                 }
+                plugin.getLogger().info("plan == null: " + Boolean.toString(plan == null)
+                + "\nplanData == null: " + Boolean.toString(planData == null));
+                
                 plan.setFilename(planData.getFilename());
                 plan.setDisplayName(planData.getDisplayName());
                 plan.setDescription(planData.getDescription());

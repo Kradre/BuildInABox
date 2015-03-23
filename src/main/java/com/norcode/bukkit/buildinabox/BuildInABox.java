@@ -13,11 +13,6 @@ import com.norcode.bukkit.buildinabox.util.MessageFile;
 import com.norcode.bukkit.schematica.Session;
 import fr.neatmonster.nocheatplus.NoCheatPlus;
 import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
-import net.h31ix.anticheat.Anticheat;
-import net.h31ix.anticheat.api.AnticheatAPI;
-import net.h31ix.anticheat.manage.CheckType;
-import net.h31ix.updater.Updater;
-import net.h31ix.updater.Updater.UpdateType;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 
@@ -47,11 +42,9 @@ public class BuildInABox extends JavaPlugin implements Listener {
     public static String LORE_HEADER = ChatColor.GOLD + "Build-in-a-Box";
     private static BuildInABox instance;
     private DataStore datastore = null;
-    public Updater updater = null;
     private BukkitTask inventoryScanTask;
     private MessageFile messages = null;
     private Economy economy = null;
-    private Anticheat antiCheat;
     private NoCheatPlus NCP;
     private BuildManager buildManager;
     private BukkitTask buildManagerTask;
@@ -83,8 +76,7 @@ public class BuildInABox extends JavaPlugin implements Listener {
         enableEconomy();
         setupAntiCheat();
         loadMessages();
-        LORE_HEADER = getMsg("display-name"); 
-        doUpdater();
+        LORE_HEADER = getMsg("display-name");
         new File(getDataFolder(), "schematics").mkdir();
         setupPermissions();
         if (initializeDataStore()) {
@@ -164,12 +156,6 @@ public class BuildInABox extends JavaPlugin implements Listener {
     }
 
     public void setupAntiCheat() {
-        if(getServer().getPluginManager().getPlugin("AntiCheat") != null)
-        {
-            antiCheat = (Anticheat) getServer().getPluginManager().getPlugin("AntiCheat");
-        } else {
-            antiCheat = null;
-        }
         if (getServer().getPluginManager().getPlugin("NoCheatPlus") != null) {
             NCP = (NoCheatPlus) getServer().getPluginManager().getPlugin("NoCheatPlus");
         } else {
@@ -178,20 +164,12 @@ public class BuildInABox extends JavaPlugin implements Listener {
     }
 
     public void exemptPlayer(Player p) {
-        if (antiCheat != null) {
-            AnticheatAPI.exemptPlayer(p, CheckType.FAST_PLACE);
-            AnticheatAPI.exemptPlayer(p, CheckType.LONG_REACH);
-        }
         if (NCP != null) {
             NCPExemptionManager.exemptPermanently(p, fr.neatmonster.nocheatplus.checks.CheckType.BLOCKPLACE);
         }
     }
 
     public void unexemptPlayer(Player p) {
-        if (antiCheat != null) {
-            AnticheatAPI.unexemptPlayer(p, CheckType.FAST_PLACE);
-            AnticheatAPI.unexemptPlayer(p, CheckType.LONG_REACH);
-        }
         if (NCP != null) {
             NCPExemptionManager.unexempt(p, fr.neatmonster.nocheatplus.checks.CheckType.BLOCKPLACE);
         }
@@ -320,19 +298,6 @@ public class BuildInABox extends JavaPlugin implements Listener {
         getDataStore().save();
         if (inventoryScanTask != null) {
             inventoryScanTask.cancel();
-        }
-    }
-
-
-
-    public void doUpdater() {
-
-        if (cfg.getAutoUpdate().equals(BIABConfig.AutoUpdate.TRUE)) {
-            updater = new Updater(this, "build-in-a-box", this.getFile(), UpdateType.DEFAULT, true);
-        } else if (cfg.getAutoUpdate().equals(BIABConfig.AutoUpdate.FALSE)) {
-            getLogger().info("Auto-updater is disabled.  Skipping check.");
-        } else {
-            updater = new Updater(this, "build-in-a-box", this.getFile(), UpdateType.NO_DOWNLOAD, true);
         }
     }
 

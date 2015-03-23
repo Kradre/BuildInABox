@@ -17,18 +17,28 @@ public class ServerListener implements Listener {
 
     @EventHandler
     public void vaultEnabled(PluginEnableEvent event) {
-        if (event.getPlugin() != null && event.getPlugin().getName().equalsIgnoreCase("Vault")) {
+        if (event.getPlugin() == null)
+            return;
+        
+        String name = event.getPlugin().getName();
+        
+        if (name.equalsIgnoreCase("Vault")) {
             plugin.enableEconomy();
-        } else if (event.getPlugin() != null && (event.getPlugin().getName().equalsIgnoreCase("NoCheatPlus") || event.getPlugin().getName().equalsIgnoreCase("AntiCheat"))) {
+        } else if (name.equalsIgnoreCase("NoCheatPlus")) {
             plugin.setupAntiCheat();
         }
     }
 
     @EventHandler
     public void vaultDisabled(PluginDisableEvent event) {
-        if (event.getPlugin() != null && event.getPlugin().getName().equalsIgnoreCase("Vault")) {
+        if (event.getPlugin() == null)
+            return;
+        
+        String name = event.getPlugin().getName();
+        
+        if (name.equalsIgnoreCase("Vault")) {
             plugin.disableEconomy();
-        } else if (event.getPlugin() != null && (event.getPlugin().getName().equalsIgnoreCase("NoCheatPlus") || event.getPlugin().getName().equalsIgnoreCase("AntiCheat"))) {
+        } else if (name.equalsIgnoreCase("NoCheatPlus")) {
             plugin.setupAntiCheat();
         }
     }
